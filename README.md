@@ -10,3 +10,5 @@ Tasks:
 * summarize extraction results
 
 Repository uses the PyNMRSTAR library to read STAR3.0 files. 
+
+https://drive.google.com/file/d/1cM467u90PzHfCrKurDKbH0Ifsflk9_Kw/view?usp=sharing
