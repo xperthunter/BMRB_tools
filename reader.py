@@ -1,16 +1,26 @@
 import json
 import sys
 import time
+import lzma
+import pandas as pd
 
 t0 = time.perf_counter()
-with open(sys.argv[1]) as fp:
+df = pd.read_json(sys.argv[1]).reset_index()
+t1 = time.perf_counter()
+print(f'time loading data: {t1-t0:.4f}')
+
+print(df.head(5))
+print(df.columns.values)
+"""
+t0 = time.perf_counter()
+with lzma.open(sys.argv[1]) as fp:
 	data = json.load(fp)
 	t1 = time.perf_counter()
 	print(f'time loading data: {t1-t0:.4f}')
 fp.close()
 
 print(len(data))
-
+"""
 t0 = time.perf_counter()
 with open(sys.argv[2]) as fe:
 	err = json.load(fe)
@@ -21,14 +31,18 @@ fe.close()
 for k in err.keys():
 	print(k, len(err[k]))
 
-ids = list()
-sizes = dict()
-shiftnum = dict()
-shiftp = dict()
-total = 0
-for row in data:
+print(df.isnull().sum().sum())
+
+#for index, row in df.iterrows():
 #	print(row)
+#	print (row.isnull().any())
+#	for c in df.columns.values:
+#		print(row[c])
+#		if row[c] == 'NaN': 
+#			print(c)
+#			sys.exit()
 #	sys.exit()
+"""
 	rsize = round(len(row['seq']),-1)
 	if rsize in sizes:
 		sizes[rsize] += 1
@@ -67,3 +81,4 @@ for n in sorted(shiftnum.keys()):
 print()
 for f in sorted(shiftp.keys()):
 	print(f, shiftp[f])
+"""

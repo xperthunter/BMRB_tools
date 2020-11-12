@@ -14,7 +14,9 @@ parser.add_argument('--folder', required=True, type=str,
 parser.add_argument('--json', required=True, type=str,
 	metavar='<str>', help='Name of json file to dump to')
 parser.add_argument('--err', required=True, type=str,
-	metavar='<str>', help='file name for error output')                          
+	metavar='<str>', help='file name for error output')
+parser.add_argument('--csv', required=False, type=str,
+	metavar='<str>', help='input csv file with specific ids to make json from')                
 
 # grabbing all the args                                                          
 arg = parser.parse_args()
@@ -38,6 +40,16 @@ aa_list = [
 class bmrbError(Exception):
 	pass
 
+def csv_to_list(file):
+	with open(file, mode='r') as fp:
+		ids = list()
+		for line in fp.readlines():
+			if re.search('[a-zA-Z]', line): continue
+			
+			ids.append(line.rstrip())
+	
+	return ids
+		
 def assembly_number(entry):
 	
 	assemblies = entry.get_tag('_Assembly.ID')
@@ -196,8 +208,14 @@ weird = {
 	'shiftlist!1' : [],
 	'seqsError' : [],
 	'shifterrors' : [],
-	'ents_with_cs_error' : []
+	'ents_with_cs_error' : [],
+	'not_requested' : []
 }
+
+if arg.csv:
+	id_set = csv_to_list(arg.csv)
+#	print(id_set)
+#	sys.exit()
 
 data = list()
 
@@ -212,6 +230,11 @@ for file in os.listdir(arg.folder):
 	
 	id = ent.get_tag('_Entry.ID')
 	bid = id[0]
+	
+	if arg.csv:
+		if bid not in id_set:
+			weird['not_requested'].append(bid)
+			continue
 	
 	if assembly_number(ent) != 1:
 		weird['assembly>1'].append(file)
