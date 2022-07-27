@@ -38,6 +38,7 @@ class bmrbError(Exception):
 
 
 def csv_to_list(file):
+	# Read a input csv to list
 	with open(file, mode='r') as fp:
 		ids = list()
 		for line in fp.readlines():
