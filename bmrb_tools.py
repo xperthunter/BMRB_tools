@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -32,6 +32,7 @@ protein_only = [
 class bmrbError(Exception):
 	pass
 
+
 def csv_to_list(file):
 	with open(file, mode='r') as fp:
 		ids = list()
@@ -41,6 +42,7 @@ def csv_to_list(file):
 			ids.append(line.rstrip())
 	
 	return ids
+
 
 def seq_check(seq):
 	for letter in seq:
@@ -53,17 +55,20 @@ def seq_check(seq):
 			sys.exit()
 	return True
 
+
 def assembly_number(entry):
 	
 	assemblies = entry.get_tag('_Assembly.ID')
 	
 	return len(assemblies)
 
+
 def get_shiftlist(entry):
 	
 	shift_loops = entry.get_loops_by_category("Atom_chem_shift")
 	
 	return shift_loops
+
 
 def conditions(entry):
 	shiftframe = entry.get_saveframes_by_category("assigned_chemical_shifts")[0]
@@ -86,6 +91,7 @@ def conditions(entry):
 		conditions_dict[t] = {'val':v, 'units':u}
 	
 	return conditions_dict
+
 
 def conformers_check(loop):
 	model_id  = loop.get_tag('Model_ID')
@@ -127,6 +133,7 @@ def conformers_check(loop):
 	
 	return True
 
+
 def entities_with_structures(entry):
 	structloop = entry.get_loops_by_category("Atom_site")
 	if len(structloop) != 1: return None
@@ -165,6 +172,7 @@ def entities_with_structures(entry):
 			entseq[e].append(aa_dict[r])
 			counter = ind
 
+
 def get_ents_with_shifts(shifts):
 	eids = shifts.get_tag('Entity_ID')
 	
@@ -178,6 +186,7 @@ def get_ents_with_shifts(shifts):
 	if len(data_ents) == 0: return None
 	
 	return data_ents
+
 
 def seq_by_entity(entry, data_ents):
 	
@@ -212,6 +221,7 @@ def seq_by_entity(entry, data_ents):
 		return None
 	
 	return entity_sequences
+
 
 def entity_seq(entity_frame):
 	polymer = entity_frame['Polymer_type']
@@ -259,6 +269,7 @@ def entity_seq(entity_frame):
 		print(polymer[0])
 		return None
 
+
 def get_atom_types(aas, atms):
 	
 	atoms = list()
@@ -271,6 +282,7 @@ def get_atom_types(aas, atms):
 	
 	atoms.sort()
 	return atoms
+
 
 def get_shifts(shifts, proteins, id):
 	eids = shifts.get_tag('Entity_ID')
@@ -312,6 +324,7 @@ def get_shifts(shifts, proteins, id):
 		shift_data[id][atom][pos] = cs
 	
 	return shift_data
+
 
 def get_coordinates(entry):
 	# get save frame
