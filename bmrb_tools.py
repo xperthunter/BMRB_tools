@@ -7,6 +7,10 @@ import json
 
 import pynmrstar
 
+"""
+Library for processing STAR files
+"""
+
 aa_dict = {
 	'ALA':'A', 'CYS':'C', 'ASP':'D', 'GLU':'E', 'PHE':'F', 
 	'GLY':'G', 'HIS':'H', 'ILE':'I', 'LYS':'K', 'LEU':'L', 
